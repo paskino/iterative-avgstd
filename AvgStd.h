@@ -32,7 +32,7 @@ class AvgStd {
     float getMin();
     float getMax();
     float getVariance();
-    int getN();
+    unsigned int getN();
     void reset();
     void addReading(float);
     void checkAndAddReading(float);
@@ -43,7 +43,7 @@ class AvgStd {
     AvgStd();
   private:
     float min, max, var, avg, r_sigma;
-    int N;
+    unsigned int N;
   
   };
 

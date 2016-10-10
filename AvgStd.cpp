@@ -28,15 +28,18 @@ AvgStd::AvgStd(){
     AvgStd::reset();
 }
 
+/**
+ * Adds a reading only if it is within boundaries (not rejected).
+ */
 void AvgStd::checkAndAddReading(float val){
 
-    if (N < 10) 
+    if (N < 2)
         AvgStd::addReading(val);
     else {
         if (r_sigma == -1) 
             AvgStd::addReading(val);
         else {
-            if (abs(avg - val) < (r_sigma * sqrt(var)) )
+            if (abs(avg - val) <= (r_sigma * sqrt(var)) )
                 AvgStd::addReading(val);
         }
     }
@@ -92,7 +95,7 @@ float AvgStd::getStd() {
     return ret;
 }
 float AvgStd::getVariance() {return var;}
-int AvgStd::getN(){return N;}
+unsigned int AvgStd::getN(){return N;}
 float AvgStd::getMin() {return min;}
 float AvgStd::getMax() {return max;}
 
