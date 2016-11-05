@@ -23,8 +23,6 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
  #ifndef AVGSTD_H
  #define AVGSTD_H
 
- #include "Arduino.h"
-
 class AvgStd {
   public:
     float getMean();
@@ -32,18 +30,22 @@ class AvgStd {
     float getMin();
     float getMax();
     float getVariance();
+    float getSkewness();
+    float getKurtosis();
+    int isGaussian();
     unsigned int getN();
     void reset();
     void addReading(float);
     void checkAndAddReading(float);
     void setRejectionSigma(float);
     int getTrend();
-    void setTrendInterval(int);
-    void setSamplingInterval(int);
     AvgStd();
+    //void operator=();
   private:
     float min, max, var, avg, r_sigma;
-    unsigned int N;
+    float skewness, kurtosis;
+    unsigned int N, nTimes;
+
   
   };
 

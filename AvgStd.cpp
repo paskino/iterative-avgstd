@@ -36,10 +36,10 @@ void AvgStd::checkAndAddReading(float val){
     if (N < 2)
         AvgStd::addReading(val);
     else {
-        if (r_sigma == -1) 
+        if (r_sigma == -1 || (int) AvgStd::getVariance() == 0)
             AvgStd::addReading(val);
         else {
-            if (abs(avg - val) <= (r_sigma * sqrt(var)) )
+            if (fabs(avg - val) <= (r_sigma * sqrt(var)) )
                 AvgStd::addReading(val);
         }
     }
@@ -61,6 +61,8 @@ void AvgStd::addReading(float val){
         float thisavg = (avg + val)/2;
         // initial value is in avg
         var = (avg - thisavg)*(avg-thisavg) + (val - thisavg) * (val-thisavg);
+        skewness = var * (avg - thisavg);
+        kurtosis = var * var;
         avg = thisavg;
     } else {
         // set min/max
@@ -69,7 +71,15 @@ void AvgStd::addReading(float val){
         
         float M = (float)N;
 
-        var = var * ((M-1)/M) + ((val - avg)*(val - avg)/(M+1)) ;
+        // b-factor =(<v>_N + v_(N+1)) / (N+1)
+        float b = (val -avg) / (M+1);
+
+        kurtosis = kurtosis + (M *(b*b*b*b) * (1+M*M*M))- (4* b * skewness) + (6 * b *b * var * (M-1));
+
+        skewness = skewness + (M * b*b*b *(M-1)*(M+1)) - (3 * b * var * (M-1));
+
+        //var = var * ((M-1)/M) + ((val - avg)*(val - avg)/(M+1)) ;
+        var = var * ((M-1)/M) + (b * b * (M+1));
         
         avg = avg * (M/(M+1)) + val / (M+1);
     }
@@ -85,11 +95,13 @@ void AvgStd::reset(){
     min = 0;
     max = 0;
     r_sigma = -1;
+    skewness = 0;
+    kurtosis = 0;
 }
 
 float AvgStd::getMean(){return avg;}
 float AvgStd::getStd() {
-    float ret = -1;
+    float ret = 0;
     if (N>1)
         ret = sqrt(var);
     return ret;
@@ -102,4 +114,12 @@ float AvgStd::getMax() {return max;}
 void AvgStd::setRejectionSigma(float sigmas){
     r_sigma = sigmas;
 };
-    
+
+float AvgStd::getSkewness(){
+	return skewness/pow(var,1.5);
+};
+float AvgStd::getKurtosis(){
+	return kurtosis/pow(var,2);
+};
+
+
