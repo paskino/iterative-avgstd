@@ -121,5 +121,3 @@ float AvgStd::getSkewness(){
 float AvgStd::getKurtosis(){
 	return kurtosis/pow(var,2);
 };
-
-

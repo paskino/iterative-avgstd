@@ -32,13 +32,11 @@ class AvgStd {
     float getVariance();
     float getSkewness();
     float getKurtosis();
-    int isGaussian();
     unsigned int getN();
     void reset();
     void addReading(float);
     void checkAndAddReading(float);
     void setRejectionSigma(float);
-    int getTrend();
     AvgStd();
     //void operator=();
   private:
