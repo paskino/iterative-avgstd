@@ -8,16 +8,19 @@ After a few sampling, doing it by heart without a piece of paper starts to be a 
 
 I worked out a simple formula:
 
+```math
 <T>_N = 1/N * sum_i^N T_i 
 <T>_(N+1) = 1/(N+1) * sum_i^(N+1) T_i = 1/(N+1) * ( sum_i^N T_i + T_(N+1))
 
 <T>_(N+1) = N/(N+1) * <T>_N + T_(N+1)/(N+1) 
+```
 
 So the next average can be calculated by keeping in mind only 3 numbers: the average, the number of samplings and the last sample. That's nice!
 I worked out also the rule for the standard deviation, or better for the variance. 
 
+```math
 var_(N+1) = var_N * ((N-1)/N) + (T_(N+1) - <T>_N)^2 
-
+```
 Here, you need to remember only 4 numbers, the average, the variance, the sample and the number of samplings.
 
 This rules are very useful especially on low resource hardware because they do not require a lot of memory.
